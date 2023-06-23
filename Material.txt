@@ -1,0 +1,9 @@
+1 Raspberry Pi 3
+1 MeanWell Schaltnetzteil 5V DC 4,0A
+1 digitaler LED RGB NeoPixel Stripe, IP65 vergossen, 30 LEDs/m
+1 Lochrasterplatine 15x20mm
+2m Kupferlitze schwarz 0.75mm2
+2m Kupferlitze rot 0.75mm2
+2m Kupferlitze weiss 0.75mm2
+1 MDF Holzplatte 500x500x20mm von Jumbo
+2 Sperrholzplatte 500x500x4mm von Jumbo
