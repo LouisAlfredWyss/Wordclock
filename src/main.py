@@ -2,19 +2,12 @@
 import argparse
 from datetime import datetime
 import numpy as np 
-from rpi_ws281x import PixelStrip
-from led import color_set
-
-# LED strip configuration:
-LED_COUNT      = 121      # Number of LED pixels.
-LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
-#LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
-LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
-LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
-LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
-LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
-
+from rpi_ws281x import PixelStrip, Color
+from led import set_color, clear_color, set_minute, wipe_color
+from constants import LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA,\
+                        LED_BRIGHTNESS, LED_INVERT, LED_CHANNEL
+from constants import VEC_1, VEC_2, VEC_3, VEC_4, VEC_5, VEC_6, VEC_7,\
+                        VEC_8, VEC_9, VEC_10, VEC_11, VEC_12, VEC_ES_ISCH
 
 if __name__ == '__main__':
     # Process arguments
@@ -22,44 +15,6 @@ if __name__ == '__main__':
     parser.add_argument('-c', '--clear', action='store_true', help='clear the display on exit')
     args = parser.parse_args()
 
-    # Vektoren mit LED-Positionen zur jeweiligen Stunde
-    vec1 = [92, 104, 113]
-    vec2 = [5, 16, 27, 38]
-    vec3 = [3, 18, 25]
-    vec4 = [19, 24, 41, 46, 63]
-    vec5 = [1, 20, 23, 42]
-    vec6 = [60, 71, 82, 93, 103, 114]
-    vec7 = [0, 21, 22, 43, 44, 65]
-    vec8 = [66, 87, 88, 108, 109]
-    vec9 = [85, 90, 106, 111]
-    vec10 = [47, 62, 69, 84, 91]
-    vec11 = [17, 26, 39, 48]
-    vec12 = [64, 67, 86, 89, 107, 110]
-    
-    # Vektor mit LED-Positionen zu den übrigen Worten
-    vecEsIsch = [33, 54, 55, 76, 98, 119]
-    vecVor = [14, 29, 36]
-    vecViertel = [9, 12, 31, 34, 53, 56, 75]
-    vecUeber = [58, 73, 80, 95]
-    vecHalbi = [15, 28, 37, 50, 59]
-    vecAb = [94 ,102]
-    vecFuef = [97, 99, 118]
-    vecZaeh = [96, 100, 117]
-    vecZwaenzg = [13, 30, 35, 52, 57,74]
-    
-    # Vekoren mit LED-Positionen zur jeweiligen Minute
-    vec5_10 = np.concatenate([vecFuef, vecAb])
-    vec10_15 = np.concatenate([vecZaeh, vecAb])
-    vec15_20 = np.concatenate([vecViertel, vecAb])
-    vec20_25 = np.concatenate([vecZwaenzg, vecAb])
-    vec25_30 = np.concatenate([vecFuef, vecVor, vecHalbi])
-    vec30_35 = vecHalbi
-    vec35_40 = np.concatenate([vecFuef, vecUeber, vecHalbi])
-    vec40_45 = np.concatenate([vecZwaenzg, vecVor])
-    vec45_50 = np.concatenate([vecViertel, vecVor])
-    vec50_55 = np.concatenate([vecZaeh, vecVor])
-    vec55_60 = np.concatenate([vecFuef, vecVor])
-                
     # Create NeoPixel object with appropriate configuration.
     strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
     # Intialize the library (must be called once before other functions).
@@ -71,7 +26,7 @@ if __name__ == '__main__':
  
     try:
         # "Es isch" anzeigen lassen, ist immer an.
-        colorSet(strip, vecEsIsch)
+        set_color(strip, VEC_ES_ISCH)
         
         while True:
             # time.sleep(1000/1000.0)
@@ -79,76 +34,76 @@ if __name__ == '__main__':
             # Abfragen der aktuellen Zeit und auf Stunden und Minuten aufteilen
             now_method = datetime.now()   
             hours = int(now_method.strftime("%H")) % 12
-            minutes = int(now_method.strftime("%M"))
+            minute = int(now_method.strftime("%M"))
             seconds = int(now_method.strftime("%S"))
             
             # Stunde um eines erhöhen wenn Minute grösser gleich 30
-            if minutes >= 30 and minutes < 60:
+            if minute >= 30 and minute < 60:
                 hours = hours +1
 
             # Abfragen, welche Stunde aktuell ist aktuelle Zeit anzeigen lassen
             if hours == 1:
-                colorClear(strip, vec12)
-                colorSet(strip, vec1)
-                minuteSet(strip, minutes)
+                clear_color(strip, VEC_12)
+                set_color(strip, VEC_1)
+                set_minute(strip, minute)
                 
             elif hours ==2:
-                colorClear(strip, vec1)
-                colorSet(strip, vec2)
-                minuteSet(strip, minutes)
+                clear_color(strip, VEC_1)
+                set_color(strip, VEC_2)
+                set_minute(strip, minute)
 
             elif hours == 3:
-                colorClear(strip, vec2)
-                colorSet(strip, vec3)
-                minuteSet(strip, minutes)
+                clear_color(strip, VEC_2)
+                set_color(strip, VEC_3)
+                set_minute(strip, minute)
                 
             elif hours == 4:
-                colorClear(strip, vec3)
-                colorSet(strip, vec4)
-                minuteSet(strip, minutes)
+                clear_color(strip, VEC_3)
+                set_color(strip, VEC_4)
+                set_minute(strip, minute)
                 
             elif hours == 5:
-                colorClear(strip, vec4)
-                colorSet(strip, vec5)
-                minuteSet(strip, minutes)
+                clear_color(strip, VEC_4)
+                set_color(strip, VEC_5)
+                set_minute(strip, minute)
                 
             elif hours == 6:
-                colorClear(strip, vec5)
-                colorSet(strip, vec6)
-                minuteSet(strip, minutes)
+                clear_color(strip, VEC_5)
+                set_color(strip, VEC_6)
+                set_minute(strip, minute)
                 
             elif hours == 7:
-                colorClear(strip, vec6)
-                colorSet(strip, vec7)
-                minuteSet(strip, minutes)
+                clear_color(strip, VEC_6)
+                set_color(strip, VEC_7)
+                set_minute(strip, minute)
                 
             elif hours == 8:
-                colorClear(strip, vec7)
-                colorSet(strip, vec8)
-                minuteSet(strip, minutes)
+                clear_color(strip, VEC_7)
+                set_color(strip, VEC_8)
+                set_minute(strip, minute)
                 
             elif hours == 9:
-                colorClear(strip, vec8)
-                colorSet(strip, vec9)
-                minuteSet(strip, minutes)
+                clear_color(strip, VEC_8)
+                set_color(strip, VEC_9)
+                set_minute(strip, minute)
                 
             elif hours == 10:
-                colorClear(strip, vec9)
-                colorSet(strip, vec10)
-                minuteSet(strip, minutes)
+                clear_color(strip, VEC_9)
+                set_color(strip, VEC_10)
+                set_minute(strip, minute)
                 
             elif hours == 11:
-                colorClear(strip, vec10)
-                colorSet(strip, vec11)
-                minuteSet(strip, minutes)
+                clear_color(strip, VEC_10)
+                set_color(strip, VEC_11)
+                set_minute(strip, minute)
                 
             else:
-                colorClear(strip, vec11)
-                colorSet(strip, vec12)
-                minuteSet(strip, minutes)
+                clear_color(strip, VEC_11)
+                set_color(strip, VEC_12)
+                set_minute(strip, minute)
             
  
     except KeyboardInterrupt:
         if args.clear:
-            colorWipe(strip, Color(0,0,0), 0)
+            wipe_color(strip, Color(0,0,0), 0)
             

@@ -6,70 +6,74 @@ Created on Fri Jun 23 19:35:54 2023
 """
 import time
 from rpi_ws281x import Color
-import numpy as np 
+import numpy as np
+from constants import VEC_5_10, VEC_10_15,VEC_15_20, VEC_20_25,VEC_25_30,\
+                        VEC_30_35, VEC_35_40, VEC_40_45, VEC_45_50,\
+                        VEC_50_55, VEC_55_60, VEC_VOR, VEC_VIERTEL, VEC_UEBER,\
+                        VEC_HALBI, VEC_AB, VEC_FUEF, VEC_ZAEH, VEC_ZWAENZG
 
 
-def color_wipe(strip, color, wait_ms=0):
+def wipe_color(strip, color, wait_ms=0):
     """Wipe color across display a pixel at a time."""
     for i in range(strip.numPixels()):
         strip.setPixelColor(i, color)
         strip.show()
         time.sleep(wait_ms/1000.0)
         
-def color_clear(strip, delVec):
-    for i in range(0, len(delVec)):
-        strip.setPixelColor(delVec[i], Color(0, 0, 0))
+def clear_color(strip, delete_vec):
+    for i in range(0, len(delete_vec)):
+        strip.setPixelColor(int(delete_vec[i]), Color(0, 0, 0))
         strip.show()
 
-def color_set(strip, ledVec):        
-    for i in range(0, len(ledVec)):
-        strip.setPixelColor(ledVec[i], Color(255, 255, 255))
+def set_color(strip, set_vec):        
+    for i in range(0, len(set_vec)):
+        strip.setPixelColor(int(set_vec[i]), Color(255, 255, 255))
     strip.show()
     
-def minuteSet(strip, timeMinutes):
+def set_minute(strip, minute):
     
-    if  timeMinutes >= 5 and timeMinutes < 10:
-        colorSet(strip, vec5_10)
+    if  minute >= 5 and minute < 10:
+        set_color(strip, VEC_5_10)
         strip.show()
 
-    elif timeMinutes >= 10 and timeMinutes < 15:
-        colorSet(strip, vec10_15)
-        colorClear(strip, vecFuef)
+    elif minute >= 10 and minute < 15:
+        set_color(strip, VEC_10_15)
+        clear_color(strip, VEC_FUEF)
 
-    elif timeMinutes >= 15 and timeMinutes < 20:
-        colorSet(strip, vec15_20)
-        colorClear(strip, vecZaeh)        
+    elif minute >= 15 and minute < 20:
+        set_color(strip, VEC_15_20)
+        clear_color(strip, VEC_ZAEH)        
 
-    elif timeMinutes >= 20 and timeMinutes < 25:
-        colorSet(strip, vec20_25)
-        colorClear(strip, vecViertel)
+    elif minute >= 20 and minute < 25:
+        set_color(strip, VEC_20_25)
+        clear_color(strip, VEC_VIERTEL)
 
-    elif timeMinutes >= 25 and timeMinutes < 30:
-        colorSet(strip, vec25_30)
-        colorClear(strip, np.concatenate([vecZwaenzg, vecAb]))
+    elif minute >= 25 and minute < 30:
+        set_color(strip, VEC_25_30)
+        clear_color(strip, np.concatenate([VEC_ZWAENZG, VEC_AB]))
 
-    elif timeMinutes >= 30 and timeMinutes < 35:
-        colorSet(strip, vec30_35)
-        colorClear(strip, np.concatenate([vecFuef, vecVor]))
+    elif minute >= 30 and minute < 35:
+        set_color(strip, VEC_30_35)
+        clear_color(strip, np.concatenate([VEC_FUEF, VEC_VOR]))
 
-    elif timeMinutes >= 35 and timeMinutes < 40:
-        colorSet(strip, vec35_40)
+    elif minute >= 35 and minute < 40:
+        set_color(strip, VEC_35_40)
         
-    elif timeMinutes >= 40 and timeMinutes < 45:
-        colorSet(strip, vec40_45)
-        colorClear(strip, np.concatenate([vecFuef, vecUeber, vecHalbi]))
+    elif minute >= 40 and minute < 45:
+        set_color(strip, VEC_40_45)
+        clear_color(strip, np.concatenate([VEC_FUEF, VEC_UEBER, VEC_HALBI]))
 
-    elif timeMinutes >= 45 and timeMinutes < 50:
-        colorSet(strip, vec45_50)
-        colorClear(strip, vecZwaenzg)
+    elif minute >= 45 and minute < 50:
+        set_color(strip, VEC_45_50)
+        clear_color(strip, VEC_ZWAENZG)
         
-    elif timeMinutes >= 50 and timeMinutes < 55:
-        colorSet(strip, vec50_55)
-        colorClear(strip, vecViertel)
+    elif minute >= 50 and minute < 55:
+        set_color(strip, VEC_50_55)
+        clear_color(strip, VEC_VIERTEL)
 
-    elif timeMinutes >= 55 and timeMinutes < 60:
-        colorSet(strip, vec55_60)
-        colorClear(strip, vecZaeh)
+    elif minute >= 55 and minute < 60:
+        set_color(strip, VEC_55_60)
+        clear_color(strip, VEC_ZAEH)
         
     else:
-        colorClear(strip, np.concatenate([vecFuef, vecVor]))
+        clear_color(strip, np.concatenate([VEC_FUEF, VEC_VOR]))
