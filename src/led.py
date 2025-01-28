@@ -5,7 +5,7 @@ Created on Fri Jun 23 19:35:54 2023
 @author: laugi
 """
 import time
-from rpi_ws281x import Color, setPixelColor
+from rpi_ws281x import Color
 import numpy as np 
 
 
