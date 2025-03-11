@@ -37,8 +37,8 @@ if __name__ == '__main__':
             minute = int(now_method.strftime("%M"))
             seconds = int(now_method.strftime("%S"))
             
-            # Stunde um eines erhöhen wenn Minute grösser gleich 30
-            if minute >= 30 and minute < 60:
+            # Stunde um eines erhöhen wenn Minute grösser gleich 25
+            if minute >= 25 and minute < 60:
                 hours = hours +1
 
             # Abfragen, welche Stunde aktuell ist aktuelle Zeit anzeigen lassen
