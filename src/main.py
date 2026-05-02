@@ -104,6 +104,5 @@ if __name__ == '__main__':
             
  
     except KeyboardInterrupt:
-        if args.clear:
-            wipe_color(strip, Color(0,0,0), 0)
+        wipe_color(strip, Color(0,0,0), 0)
             
