@@ -29,7 +29,7 @@ def get_temperature(path):
     for url in urls:
         response = requests.request("GET", url, headers=headers, data=payload)
         if response.status_code == 200:
-            temp.append(pd.json_normalize(response.json()).drop('offset', axis=1).values)
+            temp.append(json_normalize(response.json()).drop('offset', axis=1).values)
         else:
             pass
     time_ser = pd.Series(datetime.now()).repeat(temp[0].shape[1])
