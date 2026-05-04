@@ -4,7 +4,6 @@ import time
 # import shutil
 from rpi_ws281x import PixelStrip, Color
 from wordclock import get_current_time, color_set, hour_set, color_wipe
-from mystrom import get_temperature
 # from pythonping import ping
 
 
@@ -18,9 +17,6 @@ LED_BRIGHTNESS = 100     # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
-STORE_PATH = r'/home/pi/shared/mystrom_csv/temperature.csv'
-TARGET_PATH =  r'C:\\Users\\laugi\\repos\\mystrom\\data\\temperature.csv'
-HOST_IP = '192.168.0.17'
 # CHECK_STR = 'Reply from 192.168.0.17, 29 bytes in'
 
 if __name__ == '__main__':
@@ -44,8 +40,6 @@ if __name__ == '__main__':
         vecEsIsch = [33, 54, 55, 76, 98, 119]
         color_set(strip, vecEsIsch)
         
-        last_temp_time = 0
-        
         while True:           
             time.sleep(1.0)
             
@@ -54,13 +48,6 @@ if __name__ == '__main__':
             
             # Abfragen, welche Stunde aktuell ist aktuelle Zeit anzeigen lassen
             hour_set(strip, hours, minutes)
-            
-            # Get temperature once every 60 seconds to avoid SD card exhaustion and API spam
-            current_time = time.time()
-            if current_time - last_temp_time >= 60:
-                get_temperature(STORE_PATH)
-                last_temp_time = current_time
-            
 
             # if CHECK_STR == str(ping(HOST_IP, verbose=False, count=1))[:36]:
             #     shutil.copyfile(STORE_PATH, TARGET_PATH)
