@@ -1,7 +1,8 @@
 # coding=utf-8
 import argparse
-from datetime import datetime
+import time
 import numpy as np 
+from datetime import datetime
 from rpi_ws281x import PixelStrip, Color
 from led import set_color, clear_color, set_minute, wipe_color
 from constants import LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA,\
@@ -29,7 +30,7 @@ if __name__ == '__main__':
         set_color(strip, VEC_ES_ISCH)
         
         while True:
-            # time.sleep(1000/1000.0)
+            time.sleep(1.0)
             
             # Abfragen der aktuellen Zeit und auf Stunden und Minuten aufteilen
             now_method = datetime.now()   
@@ -105,4 +106,3 @@ if __name__ == '__main__':
  
     except KeyboardInterrupt:
         wipe_color(strip, Color(0,0,0), 0)
-            

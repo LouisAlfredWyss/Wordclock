@@ -1,5 +1,6 @@
 # coding=utf-8
 import argparse
+import time
 # import shutil
 from rpi_ws281x import PixelStrip, Color
 from wordclock import get_current_time, color_set, hour_set, color_wipe
@@ -43,7 +44,10 @@ if __name__ == '__main__':
         vecEsIsch = [33, 54, 55, 76, 98, 119]
         color_set(strip, vecEsIsch)
         
+        last_temp_time = 0
+        
         while True:           
+            time.sleep(1.0)
             
             # Abfragen der aktuellen Zeit und auf Stunden und Minuten aufteilen
             hours, minutes = get_current_time()
@@ -51,8 +55,11 @@ if __name__ == '__main__':
             # Abfragen, welche Stunde aktuell ist aktuelle Zeit anzeigen lassen
             hour_set(strip, hours, minutes)
             
-            # Get temperature
-            get_temperature(STORE_PATH)
+            # Get temperature once every 60 seconds to avoid SD card exhaustion and API spam
+            current_time = time.time()
+            if current_time - last_temp_time >= 60:
+                get_temperature(STORE_PATH)
+                last_temp_time = current_time
             
 
             # if CHECK_STR == str(ping(HOST_IP, verbose=False, count=1))[:36]:

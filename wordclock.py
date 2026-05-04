@@ -87,7 +87,7 @@ def color_wipe(strip, color, wait_ms=0):
 def color_clear(strip, leds):
     for led in leds:
         strip.setPixelColor(led, Color(0, 0, 0))
-        strip.show()
+    strip.show()
 
 def color_set(strip, leds):
     
@@ -102,8 +102,14 @@ def get_current_time():
     return hours, minutes
 
 def word_set(strip, minutes):
+    if minutes // 5 == 0:
+        color_clear(strip, word_dict[1])
+        color_clear(strip, word_dict[2])
+        color_clear(strip, word_dict[3])
+        color_clear(strip, minutes_dict[6])
+        
     # Set word ab
-    if 0 < minutes // 5 <= 4:
+    elif 0 < minutes // 5 <= 4:
         color_clear(strip, word_dict[2])
         color_clear(strip, word_dict[3])
         color_set(strip, word_dict[1])
@@ -154,7 +160,6 @@ def hour_set(strip, hours, minutes):
 
     else:           
         color_clear(strip, hour_dict[11])
-        color_clear(strip, word_dict[2])
         color_set(strip, hour_dict[hours % 12])
         minute_set(strip, minutes)
         word_set(strip, minutes)

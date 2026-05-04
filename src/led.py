@@ -23,7 +23,7 @@ def wipe_color(strip, color, wait_ms=0):
 def clear_color(strip, delete_vec):
     for i in range(0, len(delete_vec)):
         strip.setPixelColor(int(delete_vec[i]), Color(0, 0, 0))
-        strip.show()
+    strip.show()
 
 def set_color(strip, set_vec):        
     for i in range(0, len(set_vec)):
