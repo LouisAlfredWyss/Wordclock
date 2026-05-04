@@ -1,10 +1,8 @@
 # coding=utf-8
 import argparse
 import time
-# import shutil
 from rpi_ws281x import PixelStrip, Color
 from wordclock import get_current_time, color_set, hour_set, color_wipe
-# from pythonping import ping
 
 
 # LED strip configuration:
@@ -16,8 +14,6 @@ LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
 LED_BRIGHTNESS = 100     # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
-
-# CHECK_STR = 'Reply from 192.168.0.17, 29 bytes in'
 
 if __name__ == '__main__':
     # Process arguments
@@ -48,10 +44,6 @@ if __name__ == '__main__':
             
             # Abfragen, welche Stunde aktuell ist aktuelle Zeit anzeigen lassen
             hour_set(strip, hours, minutes)
-
-            # if CHECK_STR == str(ping(HOST_IP, verbose=False, count=1))[:36]:
-            #     shutil.copyfile(STORE_PATH, TARGET_PATH)
-
 
     except KeyboardInterrupt:
         color_wipe(strip, Color(0,0,0), 0)
