@@ -131,6 +131,7 @@ def word_set(strip, minutes):
         color_clear(strip, word_dict[2])
         color_clear(strip, word_dict[1])
         color_set(strip, word_dict[3])
+        color_set(strip, minutes_dict[6])
         
     # Set word vor    
     elif 8 <= minutes // 5 < 12:
