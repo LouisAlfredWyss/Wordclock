@@ -26,6 +26,7 @@ if __name__ == '__main__':
         print('Use "-c" argument to clear LEDs on exit')
  
     try:
+        is_awake = True
         # "Es isch" anzeigen lassen, ist immer an.
         set_color(strip, VEC_ES_ISCH)
         
@@ -34,9 +35,36 @@ if __name__ == '__main__':
             
             # Abfragen der aktuellen Zeit und auf Stunden und Minuten aufteilen
             now_method = datetime.now()   
-            hours = int(now_method.strftime("%H")) % 12
-            minute = int(now_method.strftime("%M"))
-            seconds = int(now_method.strftime("%S"))
+            real_hours = now_method.hour
+            hours = real_hours % 12
+            minute = now_method.minute
+            seconds = now_method.second
+            
+            # Sleep mode logic: between midnight (0) and 6:00
+            if 0 <= real_hours < 6:
+                if is_awake:
+                    wipe_color(strip, Color(0,0,0), 0)
+                    is_awake = False
+                time.sleep(5.0)  # Sleep longer to save CPU during night
+                continue
+            else:
+                if not is_awake:
+                    # Wake up: restore "Es isch"
+                    wipe_color(strip, Color(0,0,0), 0)
+                    set_color(strip, VEC_ES_ISCH)
+                    is_awake = True
+
+                # Brightness logic: reduce from 21:00 towards 24:00 (which is 00:00)
+                if 21 <= real_hours < 24:
+                    minutes_past_21 = (real_hours - 21) * 60 + minute
+                    # Decrease linearly over 180 minutes (3 hours)
+                    fraction = 1.0 - (minutes_past_21 / 180.0)
+                    # Don't let brightness hit 0 to avoid turning off prematurely
+                    current_brightness = max(1, int(LED_BRIGHTNESS * fraction))
+                else:
+                    current_brightness = LED_BRIGHTNESS
+                
+                strip.setBrightness(current_brightness)
             
             # Stunde um eines erhöhen wenn Minute grösser gleich 25
             if minute >= 25 and minute < 60:
