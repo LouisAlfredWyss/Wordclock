@@ -2,7 +2,7 @@
 """
 Created on Mon Jul 24 17:13:16 2023
 
-@author: laugi
+@author: Louis Wyss
 """
 
 
@@ -142,7 +142,8 @@ def word_set(strip, minutes):
         
 def minute_set(strip, minutes):
     if 0 < minutes // 5:
-        color_clear(strip, minutes_dict[minutes // 5 - 1])
+        if minutes // 5 != 7:
+            color_clear(strip, minutes_dict[minutes // 5 - 1])
         color_set(strip, minutes_dict[minutes // 5])
         
     else:
