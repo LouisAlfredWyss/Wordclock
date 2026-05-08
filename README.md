@@ -21,11 +21,9 @@ sudo pip3 install rpi_ws281x numpy
 ## Running the Application
 The `rpi_ws281x` library uses PWM via GPIO pin 18 by default, which requires root privileges.
 
-You can run either the original script in the root directory or the refactored version in the `src/` folder:
+To run the clock, execute the script in the `src/` folder:
 
 ```bash
-sudo python3 main.py
-# OR
 sudo python3 src/main.py
 ```
 
@@ -33,5 +31,5 @@ sudo python3 src/main.py
 * `-c` or `--clear`: Clears the LED display when the script exits (e.g., via Ctrl+C).
 
 ```bash
-sudo python3 main.py -c
+sudo python3 src/main.py -c
 ```
